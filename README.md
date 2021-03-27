@@ -6,7 +6,45 @@ This repository implements a very generic unit of work pattern that uses the rep
 
 The following gist is an example on how to use the current Unit of Work pattern:
 
-<script src="https://gist.github.com/lakylekidd/11e065f3d961cc82f816b850627e22d8.js"></script>
+```CSharp
+public interface IFooContext : IContext
+{ }
+
+public class BarEntity : Entity
+{
+    public BarEntity(Guid id) 
+        : base(id)
+    { }
+}
+
+public interface IFooRepository 
+    : IRepository<BarEntity>
+{ }
+
+public class FooRepository : Repository<BarEntity>,
+    IFooRepository
+{
+    public FooRepository(IContext context) 
+        : base(context)
+    { }
+}
+
+public interface IUnitOfWork : IUnitOfWorkBase
+{
+    IFooRepository FooRepository { get; }
+}
+
+public class UnitOfWork : UnitOfWorkBase<IFooContext>, IUnitOfWork
+{
+    public UnitOfWork(IFooContext context)
+        : base(context)
+    {
+        AddMapping<IFooRepository, FooRepository>();
+    }
+
+    public IFooRepository FooRepository => Get<IFooRepository>();
+}
+```
 
 ## TODOs
 
