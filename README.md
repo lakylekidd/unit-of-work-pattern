@@ -1,4 +1,4 @@
-﻿# Unit of Work Pattern
+# Unit of Work Pattern
 
 This repository implements a very generic unit of work pattern that uses the repository pattern at its base.
 
@@ -45,6 +45,8 @@ public class UnitOfWork : UnitOfWorkBase<IFooContext>, IUnitOfWork
     public IFooRepository FooRepository => Get<IFooRepository>();
 }
 ```
+
+You can use .NET's dependency injection and then inject the `IUnitOfWork` interface into your services. This interface will expose all the repositories you've defined, and only the necessary repositories will be initialized when needed.
 
 ## TODOs
 
